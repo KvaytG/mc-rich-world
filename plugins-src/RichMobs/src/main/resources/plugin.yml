@@ -1,0 +1,6 @@
+name: RichMobs
+authors: [KvaytG]
+main: ru.kvaytg.richmobs.RichMobs
+version: 1.0.0
+api-version: 1.13
+depend: [RichDonate]

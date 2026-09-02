@@ -1,0 +1,15 @@
+# Кастомные предметы (items.yml)
+
+# Очищать ли инвентарь при заходе?
+clearInventoryOnJoin: true
+
+# Список предметов
+items:
+    menu:
+        material: KNOWLEDGE_BOOK
+        name: '&fМеню'
+        slot: 5
+        command: 'menu'
+        blockDrop: true
+        blockMovement: true
+        allowedWorlds: ["world"]

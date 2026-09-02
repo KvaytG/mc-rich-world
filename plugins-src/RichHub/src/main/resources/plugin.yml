@@ -1,0 +1,6 @@
+name: RichHub
+author: KvaytG
+main: ru.kvaytg.richhub.RichHub
+version: 1.0.0
+api-version: 1.13
+depend: [RichWorld, RichDonate, ColorAPI]

@@ -1,0 +1,8 @@
+{
+  "id": "richdonate",
+  "name": "RichDonate",
+  "authors": ["KvaytG"],
+  "main": "ru.kvaytg.richdonate.velocity.RichDonate",
+  "version": "1.0.0",
+  "description": "Донат-система проекта RichWorld"
+}

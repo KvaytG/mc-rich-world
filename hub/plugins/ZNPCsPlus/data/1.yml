@@ -1,0 +1,19 @@
+id: '1'
+is-processed: true
+allow-commands: true
+enabled: true
+uuid: 76a37c39-8e53-468e-ab09-ec16ba59e4e8
+world: world
+location:
+  x: -4.5
+  y: 99.0
+  z: -7.5
+  yaw: 0.0
+  pitch: 0.0
+type: zombie_villager
+hologram:
+  lines:
+  - '&#ffaa01СИМУЛЯТОР'
+  - '&#d0d0d0Онлайн: %bungee_simulator%'
+actions:
+- lol.pyr.znpcsplus.interaction.switchserver.SwitchServerAction;c2ltdWxhdG9y;10000;RIGHT_CLICK;0

@@ -1,0 +1,17 @@
+name: RichDonate
+authors: [KvaytG]
+main: ru.kvaytg.richdonate.paper.RichDonate
+version: 1.0.0
+api-version: 1.13
+description: "Донат-система проекта RichWorld"
+depend: [ColorAPI, PlaceholderAPI]
+commands:
+    balance:
+        description: "Displays the player's balance"
+        usage: "/balance"
+    vip:
+        description: "Responsible for the purchase of VIP privileges"
+        usage: "/vip"
+    donate:
+        description: "Shows donate menu"
+        usage: "/donate"

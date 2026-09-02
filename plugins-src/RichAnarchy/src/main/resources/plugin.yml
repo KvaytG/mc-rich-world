@@ -1,0 +1,16 @@
+name: RichAnarchy
+authors: [KvaytG]
+main: ru.kvaytg.richanarchy.RichAnarchy
+version: 1.0.0
+api-version: 1.13
+depend: [RichDonate, ColorAPI]
+commands:
+    sell:
+        description: "Sell diamonds or netherite"
+        usage: "/sell"
+    info:
+        description: "Display an info-message"
+        usage: "/info"
+    buy:
+        description: "Buy a potion"
+        usage: "/info"

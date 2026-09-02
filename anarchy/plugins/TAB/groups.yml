@@ -1,0 +1,9 @@
+_DEFAULT_:
+  tabprefix: "&r"
+  tagprefix: "&r"
+vip:
+  tabprefix: "&aVIP &r"
+  tagprefix: "&aVIP &r"
+admin:
+  tabprefix: "&cАдмин &r"
+  tagprefix: "&cАдмин &r"

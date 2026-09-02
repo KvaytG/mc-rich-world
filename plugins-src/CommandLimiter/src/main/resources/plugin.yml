@@ -1,0 +1,5 @@
+name: CommandLimiter
+author: KvaytG
+main: ru.kvaytg.commandlimiter.CommandLimiter
+version: 1.0.0
+api-version: 1.13

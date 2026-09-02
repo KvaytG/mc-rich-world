@@ -1,0 +1,143 @@
+open_command: menu
+size: 27
+menu_title: 'Выбор режима'
+register_command: true
+items:
+  'simulator_online':
+    material: GRASS_BLOCK
+    slot: 10
+    priority: 0
+    display_name: ' '
+    lore:
+      - '&#FFAA01 СИМУЛЯТОР'
+      - ''
+      - ' &#FFFF31Статус: &aОнлайн '
+      - ''
+      - '&#FFFF31 Работайте серпом, продавайте '
+      - '&#FFFF31 траву и получайте монеты, но '
+      - '&#FFFF31 берегитесь слаймов. '
+      - ''
+      - ' &a• Нажмите, чтобы играть '
+      - ''
+    view_requirement:
+      requirements:
+        server_status:
+          type: string equals
+          input: '%pinger_isonline_127.0.0.1:28003%'
+          output: '&aOnline'
+    left_click_commands:
+    - '[connect] simulator'
+  'simulator_offline':
+    material: GRASS_BLOCK
+    slot: 10
+    priority: 1
+    display_name: ' '
+    lore:
+      - '&#FFAA01 СИМУЛЯТОР'
+      - ''
+      - ' &#FFFF31Статус: &cОффлайн '
+      - ''
+      - '&#FFFF31 Работайте серпом, продавайте '
+      - '&#FFFF31 траву и получайте монеты, но '
+      - '&#FFFF31 берегитесь слаймов. '
+      - ''
+      - ' &c• Сервер выключен '
+      - ''
+    view_requirement:
+      requirements:
+        server_status:
+          type: string equals
+          input: '%pinger_isonline_127.0.0.1:28003%'
+          output: '&cOffline'
+  'anarchy_online':
+    material: NETHERRACK
+    slot: 13
+    priority: 0
+    display_name: ' '
+    lore:
+      - '&#FFAA01 АНАРХИЯ'
+      - ''
+      - ' &#FFFF31Статус: &aОнлайн '
+      - ''
+      - '&#FFFF31 Сражайтесь без правил. '
+      - '&#FFFF31 Захватывайте ресурсы '
+      - '&#FFFF31 и побеждайте врагов. '
+      - ''
+      - ' &a• Нажмите, чтобы играть '
+      - ''
+    view_requirement:
+      requirements:
+        server_status:
+          type: string equals
+          input: '%pinger_isonline_127.0.0.1:28004%'
+          output: '&aOnline'
+    left_click_commands:
+    - '[connect] anarchy'
+  'anarchy_offline':
+    material: NETHERRACK
+    slot: 13
+    priority: 1
+    display_name: ' '
+    lore:
+      - '&#FFAA01 АНАРХИЯ'
+      - ''
+      - ' &#FFFF31Статус: &cОффлайн '
+      - ''
+      - '&#FFFF31 Сражайтесь без правил. '
+      - '&#FFFF31 Захватывайте ресурсы '
+      - '&#FFFF31 и побеждайте врагов. '
+      - ''
+      - ' &c• Сервер выключен '
+      - ''
+    view_requirement:
+      requirements:
+        server_status:
+          type: string equals
+          input: '%pinger_isonline_127.0.0.1:28004%'
+          output: '&cOffline'
+  'pit_online':
+    material: STONE
+    slot: 16
+    priority: 0
+    display_name: ' '
+    lore:
+      - '&#FFAA01 ЯМА'
+      - ''
+      - ' &#FFFF31Статус: &aОнлайн '
+      - ''
+      - '&#FFFF31 Убивайте всех, кого видите. '
+      - '&#FFFF31 Получайте монеты и за них '
+      - '&#FFFF31 улучшайте броню. '
+      - ''
+      - ' &a• Нажмите, чтобы играть '
+      - ''
+    view_requirement:
+      requirements:
+        server_status:
+          type: string equals
+          input: '%pinger_isonline_127.0.0.1:28002%'
+          output: '&aOnline'
+    left_click_commands:
+    - '[connect] pit'
+  'pit_offline':
+    material: STONE
+    slot: 16
+    priority: 1
+    display_name: ' '
+    lore:
+      - '&#FFAA01 ЯМА'
+      - ''
+      - ' &#FFFF31Статус: &cОффлайн '
+      - ''
+      - '&#FFFF31 Убивайте всех, кого видите. '
+      - '&#FFFF31 Получайте монеты и за них '
+      - '&#FFFF31 улучшайте броню. '
+      - ''
+      - ' &c• Сервер выключен '
+      - ''
+    view_requirement:
+      requirements:
+        server_status:
+          type: string equals
+          input: '%pinger_isonline_127.0.0.1:28002%'
+          output: '&cOffline'

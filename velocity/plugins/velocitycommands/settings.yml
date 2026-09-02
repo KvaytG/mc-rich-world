@@ -1,0 +1,19 @@
+# Made by Digitality.dev | https://discord.gg/digitality
+# Only minimessage format is supported as color! (https://docs.adventure.kyori.net/minimessage.html)
+
+prefix: "<gradient:#0BC1FB:#1AFDFD>VelocityCommands</gradient> <dark_gray>| "
+default-message: "<#FF0000>Данная команда заблокирована"
+
+reload-message: "<green>Configuration file settings.yml was successfully reloaded!"
+no-permission: "<red>You don't have permission to do that!"
+
+disabled-commands:
+  - "velocity"
+  - "server"
+  - "vcmds"
+
+overriden-commands:
+  tg: "<gradient:#0BC1FB:#1AFDFD>Social</gradient> <dark_gray>| <gray>Join our community <green>https://discord.gg/digitality"
+
+disable-colon-bypass: false
+# This automatically blocks commands like /bukkit:plugins

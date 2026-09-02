@@ -1,0 +1,8 @@
+name: RichSimulator
+authors: [KvaytG]
+main: ru.kvaytg.richsimulator.RichSimulator
+version: 1.0.0
+api-version: 1.13
+depend: [RichDonate, ColorAPI]
+softdepend: [RichWorld]
+description: "Режим Simulator проекта RichWorld"

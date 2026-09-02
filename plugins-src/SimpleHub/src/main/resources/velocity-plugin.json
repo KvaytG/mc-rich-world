@@ -1,0 +1,8 @@
+{
+  "id": "simplehub",
+  "name": "SimpleHub",
+  "authors": ["KvaytG"],
+  "main": "ru.kvaytg.simplehub.SimpleHub",
+  "version": "1.0.0",
+  "description": "Команда /hub проекта RichWorld"
+}

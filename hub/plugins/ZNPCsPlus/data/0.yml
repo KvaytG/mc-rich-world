@@ -1,0 +1,19 @@
+id: '0'
+is-processed: true
+allow-commands: true
+enabled: true
+uuid: a03c142b-675c-4cb2-b3cb-b2e80db71cfd
+world: world
+location:
+  x: 0.5
+  y: 99.0
+  z: -11.5
+  yaw: 0.0
+  pitch: 0.0
+type: zombie_villager
+hologram:
+  lines:
+  - '&#ffaa01АНАРХИЯ'
+  - '&#d0d0d0Онлайн: %bungee_anarchy%'
+actions:
+- lol.pyr.znpcsplus.interaction.switchserver.SwitchServerAction;YW5hcmNoeQ==;10000;RIGHT_CLICK;0
