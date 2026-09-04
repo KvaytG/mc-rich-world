@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -20,6 +21,9 @@ import ru.kvaytg.colorapi.ColorAPI;
 import ru.kvaytg.richauth.listener.PlayerChatListener;
 import ru.kvaytg.richauth.listener.PlayerJoinListener;
 import ru.kvaytg.richauth.listener.PlayerMoveListener;
+
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.text.Normalizer;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -58,21 +62,64 @@ public final class RichAuth extends JavaPlugin {
         REMINDER_SUFFIX = ColorAPI.colorize("&#FFFF31В боте введите ваш ник: &#FFAA01");
         BLOCKED = ColorAPI.colorize("&#FF0000Вход заблокирован владельцем аккаунта");
         TIMEOUT = ColorAPI.colorize("&#FF0000Время подтверждения истекло!");
+
         saveDefaultConfig();
         loadConfig();
+
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerChatListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
         Objects.requireNonNull(getCommand("link")).setExecutor(new LinkCommand(this));
+
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-            bot = new TelegramBot();
+
+            DefaultBotOptions botOptions = createBotOptions();
+            bot = new TelegramBot(botOptions);
+
             botsApi.registerBot(bot);
             getLogger().info("Telegram бот запущен!");
         } catch (Exception e) {
             getLogger().severe("Ошибка запуска бота: " + e.getMessage());
         }
+    }
+
+    private DefaultBotOptions createBotOptions() {
+        DefaultBotOptions options = new DefaultBotOptions();
+        FileConfiguration config = getConfig();
+
+        if (config.getBoolean("proxy.enabled", false)) {
+            String proxyType = config.getString("proxy.type", "HTTP").toUpperCase();
+            String host = config.getString("proxy.host", "127.0.0.1");
+            int port = config.getInt("proxy.port", 8080);
+
+            if ("SOCKS5".equals(proxyType) || "SOCKS".equals(proxyType)) {
+                options.setProxyType(DefaultBotOptions.ProxyType.SOCKS5);
+            } else if ("SOCKS4".equals(proxyType)) {
+                options.setProxyType(DefaultBotOptions.ProxyType.SOCKS4);
+            } else {
+                options.setProxyType(DefaultBotOptions.ProxyType.HTTP);
+            }
+
+            options.setProxyHost(host);
+            options.setProxyPort(port);
+
+            String username = config.getString("proxy.username", "");
+            String password = config.getString("proxy.password", "");
+
+            if (!username.isEmpty() && !password.isEmpty()) {
+                Authenticator.setDefault(new Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password.toCharArray());
+                    }
+                });
+            }
+            getLogger().info("Используется прокси " + proxyType + ": " + host + ":" + port);
+        }
+
+        return options;
     }
 
     @Override
@@ -132,6 +179,10 @@ public final class RichAuth extends JavaPlugin {
 
     public class TelegramBot extends TelegramLongPollingBot {
 
+        public TelegramBot(DefaultBotOptions options) {
+            super(options);
+        }
+
         @Override
         public void onUpdateReceived(Update update) {
             if (update.hasMessage() && update.getMessage().hasText()) {
@@ -182,6 +233,7 @@ public final class RichAuth extends JavaPlugin {
             sendMessage(chatId, "Введите в игре: /link " + code);
         }
 
+        @SuppressWarnings("deprecation")
         private void handleCallback(Update update) {
             String data = update.getCallbackQuery().getData();
             String[] parts = data.split(":");
@@ -274,7 +326,5 @@ public final class RichAuth extends JavaPlugin {
         public String getBotToken() {
             return botToken;
         }
-
     }
-
 }

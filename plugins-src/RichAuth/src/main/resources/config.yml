@@ -1,3 +1,10 @@
 bot-token: ""
 bot-username: ""
+proxy:
+    enabled: false
+    type: "HTTP" # Допустимо: HTTP, SOCKS5, SOCKS4
+    host: "127.0.0.1"
+    port: 12334
+    username: "" # Оставьте пустым, если авторизация не требуется
+    password: "" # Оставьте пустым, если авторизация не требуется
 linked-accounts: {}
