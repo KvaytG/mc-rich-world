@@ -14,6 +14,7 @@ public class VipCommand extends AbstractCommand {
 
     private final String messageAlreadyPurchased;
     private final String messageSuccess;
+    private final String messageProcessing;
 
     public VipCommand(RichDonate plugin) {
         super(plugin, "vip");
@@ -33,6 +34,9 @@ public class VipCommand extends AbstractCommand {
         messageSuccess = ColorAPI.colorize(
                 "&#FFFF31Поздравляем с приобретением &aVIP&#FFFF31-статуса!"
         );
+        messageProcessing = ColorAPI.colorize(
+                "&#FFFF31Предыдущая покупка &aVIP&#FFFF31 ещё обрабатывается."
+        );
     }
 
     @Override
@@ -41,16 +45,21 @@ public class VipCommand extends AbstractCommand {
             player.sendMessage(messageAlreadyPurchased);
             return;
         }
-        boolean isEnough = getPlugin().getCoins(player) >= COST;
         if (args.length == 1 && args[0].equalsIgnoreCase("confirm")) {
-            if (isEnough && getPlugin().takeCoins(player, COST)) {
-                getPlugin().giveStatus(player, "vip");
-                player.sendMessage(messageSuccess);
-            } else {
-                player.sendMessage(messageNotEnough);
+
+            if (getPlugin().isPurchasePending(player)) {
+                player.sendMessage(messageProcessing);
+                return;
+            }
+
+            if (!getPlugin().purchaseVip(player, COST, success ->
+                    player.sendMessage(success ? messageSuccess : messageNotEnough))) {
+                player.sendMessage(messageProcessing);
             }
             return;
         }
+
+        boolean isEnough = getPlugin().getCoinsLong(player) >= COST;
         player.sendMessage(isEnough ? messageEnough : messageNotEnough);
     }
 

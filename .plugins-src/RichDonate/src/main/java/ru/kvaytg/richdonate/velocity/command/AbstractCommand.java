@@ -8,11 +8,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import java.util.List;
 
-/*
-*
-* Абстрактная команда на стороне Velocity
-*
-*/
 public abstract class AbstractCommand implements SimpleCommand {
 
     private final ProxyServer proxy;
@@ -20,10 +15,7 @@ public abstract class AbstractCommand implements SimpleCommand {
     private final Component helpMessage;
     private final Component noAccessMessage;
 
-    public AbstractCommand(ProxyServer proxy,
-                           String command,
-                           int minArgs,
-                           String helpMessage) {
+    public AbstractCommand(ProxyServer proxy, String command, int minArgs, String helpMessage) {
         this.proxy = proxy;
         this.minArgs = minArgs;
         this.helpMessage = Component.text(helpMessage, TextColor.color(0xFF0000));
@@ -31,10 +23,11 @@ public abstract class AbstractCommand implements SimpleCommand {
                 "Данная команда заблокирована",
                 TextColor.color(0xFF0000)
         );
-        proxy.getCommandManager().register(proxy.getCommandManager().metaBuilder(command).build(), this);
+        proxy.getCommandManager().register(
+                proxy.getCommandManager().metaBuilder(command).build(), this
+        );
     }
 
-    @SuppressWarnings("unused")
     public ProxyServer getProxy() {
         return proxy;
     }
@@ -45,22 +38,32 @@ public abstract class AbstractCommand implements SimpleCommand {
 
     @Override
     public List<String> suggest(Invocation invocation) {
+        String[] args = invocation.arguments();
+        if (args.length == 0) return List.of("give", "take");
+        if (args.length == 1) return List.of("give", "take");
         return List.of();
     }
 
     @Override
     public void execute(Invocation invocation) {
         CommandSource sender = invocation.source();
+
         if (sender instanceof Player) {
             sender.sendMessage(noAccessMessage);
             return;
         }
+
         String[] args = invocation.arguments();
         if (args.length < minArgs) {
             sendHelpMessage(sender);
             return;
         }
-        onCommand(sender, args);
+
+        try {
+            onCommand(sender, args);
+        } catch (RuntimeException ex) {
+            sender.sendMessage(Component.text("Не удалось выполнить команду."));
+        }
     }
 
     public abstract void onCommand(CommandSource sender, String[] args);

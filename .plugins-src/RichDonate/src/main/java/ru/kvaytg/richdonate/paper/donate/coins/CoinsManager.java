@@ -1,32 +1,35 @@
 package ru.kvaytg.richdonate.paper.donate.coins;
 
 import org.bukkit.entity.Player;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-/*
-*
-* Менеджер монеток на стороне Paper
-*
-*/
 public enum CoinsManager {
 
     INSTANCE;
 
-    private static final int DEFAULT_BALANCE = 0;
+    private static final long DEFAULT_BALANCE = 0L;
 
-    private Map<Player, Integer> playersAndMoneys;
+    private final Map<UUID, Long> balances = new ConcurrentHashMap<>();
 
     public void init() {
-        playersAndMoneys = new HashMap<>();
+        balances.clear();
     }
 
-    public void setBalance(Player player, int balance) {
-        playersAndMoneys.put(player, balance);
+    public void setBalance(Player player, long balance) {
+        if (balance < 0) {
+            balance = 0;
+        }
+        balances.put(player.getUniqueId(), balance);
     }
 
-    public int getBalance(Player player) {
-        return playersAndMoneys.getOrDefault(player, DEFAULT_BALANCE);
+    public long getBalance(Player player) {
+        return balances.getOrDefault(player.getUniqueId(), DEFAULT_BALANCE);
+    }
+
+    public void remove(Player player) {
+        balances.remove(player.getUniqueId());
     }
 
 }

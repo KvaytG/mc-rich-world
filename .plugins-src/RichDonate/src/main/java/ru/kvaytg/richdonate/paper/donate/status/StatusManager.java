@@ -1,32 +1,37 @@
 package ru.kvaytg.richdonate.paper.donate.status;
 
 import org.bukkit.entity.Player;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-/*
-*
-* Менеджер статусов на стороне Paper
-*
-*/
 public enum StatusManager {
 
     INSTANCE;
 
     private static final String DEFAULT_STATUS = "default";
 
-    private Map<Player, String> playerAndStatus;
+    private final Map<UUID, String> statuses = new ConcurrentHashMap<>();
 
     public void init() {
-        playerAndStatus = new HashMap<>();
+        statuses.clear();
     }
 
     public void setStatus(Player player, String status) {
-        playerAndStatus.put(player, status);
+        statuses.put(player.getUniqueId(), normalize(status));
     }
 
     public String getStatus(Player player) {
-        return playerAndStatus.getOrDefault(player, DEFAULT_STATUS);
+        return statuses.getOrDefault(player.getUniqueId(), DEFAULT_STATUS);
+    }
+
+    public void remove(Player player) {
+        statuses.remove(player.getUniqueId());
+    }
+
+    private String normalize(String status) {
+        if (status == null || status.isBlank()) return DEFAULT_STATUS;
+        return status.toLowerCase(java.util.Locale.ROOT);
     }
 
 }

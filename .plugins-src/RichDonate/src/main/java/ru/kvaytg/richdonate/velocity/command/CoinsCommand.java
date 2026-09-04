@@ -1,43 +1,68 @@
 package ru.kvaytg.richdonate.velocity.command;
 
 import com.velocitypowered.api.command.CommandSource;
+import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.Component;
 import ru.kvaytg.richdonate.velocity.donate.coins.CoinsManager;
+import java.util.Optional;
 
-/*
-*
-* Команда изменения монеток на стороне Velocity
-*
-*/
 public class CoinsCommand extends AbstractCommand {
 
     public CoinsCommand(ProxyServer proxy) {
-        super(proxy,
-                "coins",
-                3,
-                "Usage: /coins <give|take> <name> <amount>"
-        );
+        super(proxy, "coins", 3, "Usage: /coins <give|take> <name> <amount>");
     }
 
     @Override
     public void onCommand(CommandSource sender, String[] args) {
-        String player =  args[1];
-        String subCommand = args[0].toLowerCase();
-        int amount = Integer.parseInt(args[2]);
-        if (subCommand.equals("give")) {
-            CoinsManager.INSTANCE.giveCoins(player, amount);
-            sender.sendMessage(Component.text(
-                    String.format("Коины выданы игроку %s в количестве %s шт.", player, amount)
-            ));
-        } else if (subCommand.equals("take")) {
-            CoinsManager.INSTANCE.takeCoins(player, amount);
-            sender.sendMessage(Component.text(
-                    String.format("Коины отобраны у игрока %s в количестве %s шт.", player, amount)
-            ));
-        } else {
+        String subCommand = args[0].toLowerCase(java.util.Locale.ROOT);
+        if (!subCommand.equals("give") && !subCommand.equals("take")) {
             sendHelpMessage(sender);
+            return;
         }
+
+        long amount;
+        try {
+            amount = Long.parseLong(args[2]);
+        } catch (NumberFormatException ex) {
+            sender.sendMessage(Component.text("Количество должно быть целым числом."));
+            return;
+        }
+
+        if (amount <= 0) {
+            sender.sendMessage(Component.text("Количество должно быть больше нуля."));
+            return;
+        }
+
+        Optional<Player> target = getProxy().getPlayer(args[1]);
+        if (target.isEmpty()) {
+            sender.sendMessage(Component.text("Игрок должен быть онлайн."));
+            return;
+        }
+
+        boolean changed;
+        if (subCommand.equals("give")) {
+            changed = CoinsManager.INSTANCE.giveCoins(
+                    target.get().getUniqueId(), amount,
+                    java.util.UUID.randomUUID().toString()
+            );
+        } else {
+            changed = CoinsManager.INSTANCE.takeCoins(
+                    target.get().getUniqueId(), amount,
+                    java.util.UUID.randomUUID().toString()
+            );
+        }
+
+        sender.sendMessage(Component.text(
+                changed
+                        ? String.format(
+                            subCommand.equals("give")
+                                    ? "Коины выданы игроку %s в количестве %d шт."
+                                    : "Коины отобраны у игрока %s в количестве %d шт.",
+                            target.get().getUsername(), amount
+                        )
+                        : "Операция не выполнена."
+        ));
     }
 
 }

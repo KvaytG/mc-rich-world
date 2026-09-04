@@ -3,7 +3,6 @@ package ru.kvaytg.richdonate.paper.permission;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 import ru.kvaytg.richdonate.paper.RichDonate;
-
 import java.util.HashMap;
 import java.util.Map;
 

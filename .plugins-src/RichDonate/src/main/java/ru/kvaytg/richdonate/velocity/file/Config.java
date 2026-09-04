@@ -3,58 +3,66 @@ package ru.kvaytg.richdonate.velocity.file;
 import org.ini4j.Wini;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
-*
-* Экземпляр ini-конфигурации на стороне Velocity
-*
-*/
-public class Config {
+public final class Config {
 
-    private static final Logger logger = Logger.getLogger(Config.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Config.class.getName());
 
-    private final File file;
+    private final Path file;
 
     public Config(String fileName) {
-        this.file = new File(fileName);
+        this.file = new File(fileName).toPath();
     }
 
-    public void save(String sectionName, Map<String, String> entries) {
-        if (sectionName == null || sectionName.isEmpty() || entries == null || entries.isEmpty()) {
-            return;
-        }
-        sectionName = sectionName.toUpperCase();
-        try {
-            Wini ini = new Wini(file);
-            for (Entry<String, String> entry : entries.entrySet()) {
-                ini.put(sectionName, entry.getKey(), entry.getValue());
-            }
-            ini.store();
-        } catch (IOException ex) {
-            logger.log(Level.SEVERE, "Error loading the section:: " + sectionName, ex);
-        }
-    }
-
-    public Map<String, String> load(String sectionName) {
+    public synchronized Map<String, String> load(String sectionName) {
         Map<String, String> result = new HashMap<>();
-        if (sectionName == null || sectionName.isEmpty()) {
-            return result;
-        }
-        sectionName = sectionName.toUpperCase();
+        if (sectionName == null || sectionName.isBlank()) return result;
         try {
-            Wini readIni = new Wini(file);
-            if (readIni.containsKey(sectionName)) {
-                result.putAll(readIni.get(sectionName));
+            if (!Files.exists(file)) return result;
+            Wini ini = new Wini(file.toFile());
+            if (ini.containsKey(sectionName.toUpperCase())) {
+                result.putAll(ini.get(sectionName.toUpperCase()));
             }
         } catch (IOException ex) {
-            logger.log(Level.SEVERE, "Error loading the section:: " + sectionName, ex);
+            LOGGER.log(Level.SEVERE, "Failed to load section " + sectionName, ex);
         }
         return result;
+    }
+
+    public synchronized void save(Map<String, Map<String, String>> sections) {
+        if (sections == null || sections.isEmpty()) return;
+
+        try {
+            Path parent = file.getParent();
+            if (parent != null) Files.createDirectories(parent);
+
+            Path temp = file.resolveSibling(file.getFileName() + ".tmp");
+            Files.deleteIfExists(temp);
+            Files.createFile(temp);
+            Wini ini = new Wini(temp.toFile());
+
+            for (Map.Entry<String, Map<String, String>> section : sections.entrySet()) {
+                for (Map.Entry<String, String> entry : section.getValue().entrySet()) {
+                    ini.put(section.getKey().toUpperCase(), entry.getKey(), entry.getValue());
+                }
+            }
+
+            ini.store();
+            try {
+                Files.move(temp, file, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+            } catch (java.nio.file.AtomicMoveNotSupportedException ex) {
+                Files.move(temp, file, StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, "Failed to save " + file, ex);
+        }
     }
 
 }

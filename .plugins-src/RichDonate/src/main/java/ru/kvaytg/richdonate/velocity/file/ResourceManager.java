@@ -55,7 +55,7 @@ public enum ResourceManager {
             Path outDir = outFilePath.getParent();
             Files.createDirectories(outDir);
             if (Files.exists(outFilePath) && !replace) {
-                //System.out.println("Resource '" + resourcePath + "' already exists, skipping save.");
+                // System.out.println("Resource '" + resourcePath + "' already exists, skipping save.");
                 return;
             }
             try (OutputStream out = Files.newOutputStream(outFilePath)) {

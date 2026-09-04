@@ -1,42 +1,33 @@
 package ru.kvaytg.richdonate;
 
-/*
-*
-* ОБЩИЙ КЛАСС
-*
-* Хранилище шаблонов команд
-*
-*/
 public enum ChannelCommand {
 
-    BALANCE_GIVE("BALANCE_GIVE {PLAYER} {AMOUNT}"),
-    BALANCE_TAKE("BALANCE_TAKE {PLAYER} {AMOUNT}"),
+    BALANCE_GIVE(1),
+    BALANCE_TAKE(2),
+    REQUEST_BALANCE(3),
+    RESPONSE_BALANCE(4),
+    STATUS_GIVE(5),
+    STATUS_TAKE(6),
+    REQUEST_STATUS(7),
+    RESPONSE_STATUS(8),
+    PURCHASE_VIP(9),
+    RESPONSE_PURCHASE(10);
 
-    REQUEST_BALANCE("REQUEST_BALANCE {PLAYER}"),
-    RESPONSE_BALANCE("RESPONSE_BALANCE {PLAYER} {AMOUNT}"),
+    private final int id;
 
-    STATUS_GIVE("STATUS_GIVE {PLAYER} {STATUS}"),
-    STATUS_TAKE("STATUS_TAKE {PLAYER} {REASON}"),
-
-    REQUEST_STATUS("REQUEST_STATUS {PLAYER}"),
-    RESPONSE_STATUS("RESPONSE_STATUS {PLAYER} {STATUS}");
-
-    private final String pattern;
-
-    ChannelCommand(String pattern) {
-        this.pattern = pattern.replaceAll("\\{[^}]+}", "{}").trim();
+    ChannelCommand(int id) {
+        this.id = id;
     }
 
-    public String getText(Object... args) {
-        String result = pattern;
-        for (Object arg : args) {
-            result = result.replaceFirst("\\{}", arg.toString());
+    public int getId() {
+        return id;
+    }
+
+    public static ChannelCommand fromId(int id) throws java.io.IOException {
+        for (ChannelCommand command : values()) {
+            if (command.id == id) return command;
         }
-        return result.replace("{}", "EMPTY");
-    }
-
-    public String getName() {
-        return pattern.split(" ")[0];
+        throw new java.io.IOException("Unknown RichDonate command id: " + id);
     }
 
 }

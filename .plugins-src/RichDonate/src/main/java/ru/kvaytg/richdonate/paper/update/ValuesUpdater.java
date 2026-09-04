@@ -2,24 +2,20 @@ package ru.kvaytg.richdonate.paper.update;
 
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+import ru.kvaytg.richdonate.ByteUtils;
 import ru.kvaytg.richdonate.ChannelCommand;
 import ru.kvaytg.richdonate.paper.RichDonate;
 import ru.kvaytg.richdonate.paper.donate.status.StatusManager;
 
-/*
- *
- * Обновитель всех значений на стороне Paper.
- *
- */
 public enum ValuesUpdater {
 
     INSTANCE;
 
-    private BukkitTask task = null;
+    private BukkitTask task;
 
     public void start(RichDonate plugin) {
-        if (task != null && !task.isCancelled()) return;
-        task = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+        stop();
+        task = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
             for (Player player : plugin.getServer().getOnlinePlayers()) {
                 updateBalance(plugin, player);
                 updateStatus(plugin, player);
@@ -31,15 +27,34 @@ public enum ValuesUpdater {
     public void stop() {
         if (task != null) {
             task.cancel();
+            task = null;
         }
     }
 
     private void updateBalance(RichDonate plugin, Player player) {
-        plugin.sendPluginMessage(player, ChannelCommand.REQUEST_BALANCE.getText(player.getName()));
+        plugin.sendPluginMessage(
+                player,
+                ByteUtils.encode(
+                        ChannelCommand.REQUEST_BALANCE,
+                        player.getUniqueId(),
+                        "",
+                        0,
+                        ""
+                )
+        );
     }
 
     private void updateStatus(RichDonate plugin, Player player) {
-        plugin.sendPluginMessage(player, ChannelCommand.REQUEST_STATUS.getText(player.getName()));
+        plugin.sendPluginMessage(
+                player,
+                ByteUtils.encode(
+                        ChannelCommand.REQUEST_STATUS,
+                        player.getUniqueId(),
+                        "",
+                        0,
+                        ""
+                )
+        );
     }
 
     private void updatePermissions(RichDonate plugin, Player player) {

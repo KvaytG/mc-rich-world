@@ -79,5 +79,4 @@ public class PermissionManager {
         targetGroup.addPlayer(player);
     }
 
-
 }

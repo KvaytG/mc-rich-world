@@ -3,12 +3,10 @@ package ru.kvaytg.richdonate.paper.command;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import ru.kvaytg.colorapi.ColorAPI;
 import ru.kvaytg.richdonate.paper.RichDonate;
-
 import java.util.Objects;
 
 public abstract class AbstractCommand implements CommandExecutor {

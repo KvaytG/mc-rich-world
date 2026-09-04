@@ -27,11 +27,11 @@ public class CoinsCommand extends AbstractCommand {
                 player.sendMessage(messageNoPlayer);
                 return;
             }
-            String message = String.format(messageBalanceOther, name, getPlugin().getCoins(target));
+            String message = String.format(messageBalanceOther, name, getPlugin().getCoinsLong(target));
             player.sendMessage(message);
             return;
         }
-        String message = String.format(messageBalanceMe, getPlugin().getCoins(player));
+        String message = String.format(messageBalanceMe, getPlugin().getCoinsLong(player));
         player.sendMessage(message);
     }
 

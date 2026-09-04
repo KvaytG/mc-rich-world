@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>ru.kvaytg.richdonate</groupId>
     <artifactId>RichDonate</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0</version>
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <placeholderapi.version>2.11.6</placeholderapi.version>
+        <ini4j.version>0.5.4</ini4j.version>
+        <annotations.version>26.0.2</annotations.version>
+        <patina.jar>${project.basedir}/lib/patched_1.16.5.jar</patina.jar>
+        <colorapi.jar>${project.basedir}/lib/ColorAPI.jar</colorapi.jar>
+        <velocity.jar>${project.basedir}/lib/velocity.jar</velocity.jar>
     </properties>
     <repositories>
         <repository>
@@ -19,41 +25,51 @@
     </repositories>
     <dependencies>
         <dependency>
-            <groupId>com.velocitypowered.proxy</groupId>
-            <artifactId>Velocity</artifactId>
-            <version>3.4.0</version>
-            <scope>system</scope>
-            <systemPath>C:/путь-к-ядру/velocity.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>Patina</artifactId>
             <version>1.16.5</version>
             <scope>system</scope>
-            <systemPath>C:/путь-к-ядру/cache/patched_1.16.5.jar</systemPath>
+            <systemPath>${patina.jar}</systemPath>
         </dependency>
         <dependency>
             <groupId>ru.kvaytg.colorapi</groupId>
             <artifactId>ColorAPI</artifactId>
             <version>1.0.0</version>
             <scope>system</scope>
-            <systemPath>C:/путь-к/plugins/ColorAPI.jar</systemPath>
+            <systemPath>${colorapi.jar}</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.velocitypowered.proxy</groupId>
+            <artifactId>Velocity</artifactId>
+            <version>3.4.0</version>
+            <scope>system</scope>
+            <systemPath>${velocity.jar}</systemPath>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.6</version>
+            <version>${placeholderapi.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>26.0.2</version>
+            <version>${annotations.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.ini4j</groupId>
             <artifactId>ini4j</artifactId>
-            <version>0.5.4</version>
+            <version>${ini4j.version}</version>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>
