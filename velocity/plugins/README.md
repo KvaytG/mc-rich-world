@@ -4,8 +4,8 @@
 1. Создайте папку `plugins` в папке с Velocity-сервером.
 2. Скомпилируйте следующие плагины:
 
-   * [RichDonate](/plugins-src/RichDonate)
-   * [SimpleHub](/plugins-src/SimpleHub)
+   * [RichDonate](/.plugins-src/RichDonate)
+   * [SimpleHub](/.plugins-src/SimpleHub)
 
    и положите в папку `plugins`.
 3. Скачайте следующие плагины:

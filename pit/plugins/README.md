@@ -4,13 +4,13 @@
 1. Создайте папку `plugins` в папке с Patina-сервером.
 2. Скомпилируйте следующие плагины:
 
-    * [ColorAPI](/plugins-src/ColorAPI)
-    * [CommandLimiter](/plugins-src/CommandLimiter)
-    * [RichChat](/plugins-src/RichChat)
-    * [RichDonate](/plugins-src/RichDonate)
-    * [RichMobs](/plugins-src/RichMobs)
-    * [RichPit](/plugins-src/RichPit)
-    * [RichWorld](/plugins-src/RichWorld)
+    * [ColorAPI](/.plugins-src/ColorAPI)
+    * [CommandLimiter](/.plugins-src/CommandLimiter)
+    * [RichChat](/.plugins-src/RichChat)
+    * [RichDonate](/.plugins-src/RichDonate)
+    * [RichMobs](/.plugins-src/RichMobs)
+    * [RichPit](/.plugins-src/RichPit)
+    * [RichWorld](/.plugins-src/RichWorld)
 
    и положите в папку `plugins`.
 3. Скачайте следующие плагины:
