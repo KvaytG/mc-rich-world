@@ -1,7 +1,6 @@
 package ru.kvaytg.richdonate.velocity.command;
 
 import com.velocitypowered.api.command.CommandSource;
-import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.Component;
 import ru.kvaytg.richdonate.velocity.donate.status.StatusManager;
@@ -22,13 +21,13 @@ public class StatusCommand extends AbstractCommand {
             return;
         }
 
-        Optional<Player> target = getProxy().getPlayer(args[1]);
+        Optional<UUID> target = getPlayerResolver().resolve(args[1]);
         if (target.isEmpty()) {
-            sender.sendMessage(Component.text("Игрок должен быть онлайн."));
+            sender.sendMessage(Component.text("Игрок не найден или не удалось определить его UUID."));
             return;
         }
 
-        UUID playerId = target.get().getUniqueId();
+        UUID playerId = target.get();
         boolean changed;
 
         if (subCommand.equals("give")) {
@@ -39,7 +38,7 @@ public class StatusCommand extends AbstractCommand {
             );
             sender.sendMessage(Component.text(
                     changed
-                            ? String.format("Статус %s выдан игроку %s", args[2], target.get().getUsername())
+                            ? String.format("Статус %s выдан игроку %s", args[2], args[1])
                             : "Операция не выполнена."
             ));
         } else {
@@ -49,8 +48,7 @@ public class StatusCommand extends AbstractCommand {
             );
             sender.sendMessage(Component.text(
                     changed
-                            ? String.format("Статус отозван у игрока %s. Причина: %s",
-                                target.get().getUsername(), args[2])
+                            ? String.format("Статус отозван у игрока %s. Причина: %s", args[1], args[2])
                             : "Операция не выполнена."
             ));
         }

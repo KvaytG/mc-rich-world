@@ -28,7 +28,8 @@ public class PermissionManager {
                         "command.upg",
                         "command.info",
                         "command.sell",
-                        "command.buy"
+                        "command.buy",
+                        "command.chat"
                 )
         );
 

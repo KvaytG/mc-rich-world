@@ -1,11 +1,11 @@
 package ru.kvaytg.richdonate.velocity.command;
 
 import com.velocitypowered.api.command.CommandSource;
-import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.Component;
 import ru.kvaytg.richdonate.velocity.donate.coins.CoinsManager;
 import java.util.Optional;
+import java.util.UUID;
 
 public class CoinsCommand extends AbstractCommand {
 
@@ -34,22 +34,22 @@ public class CoinsCommand extends AbstractCommand {
             return;
         }
 
-        Optional<Player> target = getProxy().getPlayer(args[1]);
+        Optional<UUID> target = getPlayerResolver().resolve(args[1]);
         if (target.isEmpty()) {
-            sender.sendMessage(Component.text("Игрок должен быть онлайн."));
+            sender.sendMessage(Component.text("Игрок не найден или не удалось определить его UUID."));
             return;
         }
 
         boolean changed;
         if (subCommand.equals("give")) {
             changed = CoinsManager.INSTANCE.giveCoins(
-                    target.get().getUniqueId(), amount,
-                    java.util.UUID.randomUUID().toString()
+                    target.get(), amount,
+                    UUID.randomUUID().toString()
             );
         } else {
             changed = CoinsManager.INSTANCE.takeCoins(
-                    target.get().getUniqueId(), amount,
-                    java.util.UUID.randomUUID().toString()
+                    target.get(), amount,
+                    UUID.randomUUID().toString()
             );
         }
 
@@ -59,7 +59,7 @@ public class CoinsCommand extends AbstractCommand {
                             subCommand.equals("give")
                                     ? "Коины выданы игроку %s в количестве %d шт."
                                     : "Коины отобраны у игрока %s в количестве %d шт.",
-                            target.get().getUsername(), amount
+                            args[1], amount
                         )
                         : "Операция не выполнена."
         ));
