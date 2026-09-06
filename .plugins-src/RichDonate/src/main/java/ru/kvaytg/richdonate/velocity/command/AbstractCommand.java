@@ -10,14 +10,14 @@ import java.util.List;
 
 public abstract class AbstractCommand implements SimpleCommand {
 
-    private final PlayerResolver playerResolver;
+    private final ProxyServer proxy;
 
     private final int minArgs;
     private final Component helpMessage;
     private final Component noAccessMessage;
 
     public AbstractCommand(ProxyServer proxy, String command, int minArgs, String helpMessage) {
-        this.playerResolver = new PlayerResolver(proxy);
+        this.proxy = proxy;
         this.minArgs = minArgs;
         this.helpMessage = Component.text(helpMessage, TextColor.color(0xFF0000));
         this.noAccessMessage = Component.text(
@@ -29,8 +29,9 @@ public abstract class AbstractCommand implements SimpleCommand {
         );
     }
 
-    protected PlayerResolver getPlayerResolver() {
-        return playerResolver;
+    @SuppressWarnings("unused")
+    protected ProxyServer getProxy() {
+        return proxy;
     }
 
     public void sendHelpMessage(CommandSource sender) {
@@ -48,18 +49,15 @@ public abstract class AbstractCommand implements SimpleCommand {
     @Override
     public void execute(Invocation invocation) {
         CommandSource sender = invocation.source();
-
         if (sender instanceof Player) {
             sender.sendMessage(noAccessMessage);
             return;
         }
-
         String[] args = invocation.arguments();
         if (args.length < minArgs) {
             sendHelpMessage(sender);
             return;
         }
-
         try {
             onCommand(sender, args);
         } catch (RuntimeException ex) {

@@ -3,14 +3,18 @@ package ru.kvaytg.richdonate.velocity.command;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.Component;
+import ru.kvaytg.richdonate.velocity.PlayerResolver;
 import ru.kvaytg.richdonate.velocity.donate.coins.CoinsManager;
 import java.util.Optional;
 import java.util.UUID;
 
 public class CoinsCommand extends AbstractCommand {
 
-    public CoinsCommand(ProxyServer proxy) {
+    private final PlayerResolver playerResolver;
+
+    public CoinsCommand(ProxyServer proxy, PlayerResolver playerResolver) {
         super(proxy, "coins", 3, "Usage: /coins <give|take> <name> <amount>");
+        this.playerResolver = playerResolver;
     }
 
     @Override
@@ -20,7 +24,6 @@ public class CoinsCommand extends AbstractCommand {
             sendHelpMessage(sender);
             return;
         }
-
         long amount;
         try {
             amount = Long.parseLong(args[2]);
@@ -28,18 +31,15 @@ public class CoinsCommand extends AbstractCommand {
             sender.sendMessage(Component.text("Количество должно быть целым числом."));
             return;
         }
-
         if (amount <= 0) {
             sender.sendMessage(Component.text("Количество должно быть больше нуля."));
             return;
         }
-
-        Optional<UUID> target = getPlayerResolver().resolve(args[1]);
+        Optional<UUID> target = playerResolver.resolve(args[1]);
         if (target.isEmpty()) {
             sender.sendMessage(Component.text("Игрок не найден или не удалось определить его UUID."));
             return;
         }
-
         boolean changed;
         if (subCommand.equals("give")) {
             changed = CoinsManager.INSTANCE.giveCoins(
@@ -52,7 +52,6 @@ public class CoinsCommand extends AbstractCommand {
                     UUID.randomUUID().toString()
             );
         }
-
         sender.sendMessage(Component.text(
                 changed
                         ? String.format(

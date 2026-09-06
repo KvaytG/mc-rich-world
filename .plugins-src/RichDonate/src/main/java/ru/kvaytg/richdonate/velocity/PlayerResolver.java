@@ -1,4 +1,4 @@
-package ru.kvaytg.richdonate.velocity.command;
+package ru.kvaytg.richdonate.velocity;
 
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;

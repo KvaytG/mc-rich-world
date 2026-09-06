@@ -3,14 +3,18 @@ package ru.kvaytg.richdonate.velocity.command;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.Component;
+import ru.kvaytg.richdonate.velocity.PlayerResolver;
 import ru.kvaytg.richdonate.velocity.donate.status.StatusManager;
 import java.util.Optional;
 import java.util.UUID;
 
 public class StatusCommand extends AbstractCommand {
 
-    public StatusCommand(ProxyServer proxy) {
+    private final PlayerResolver playerResolver;
+
+    public StatusCommand(ProxyServer proxy, PlayerResolver playerResolver) {
         super(proxy, "status", 3, "Usage: /status <give|take> <name> <status|reason>");
+        this.playerResolver = playerResolver;
     }
 
     @Override
@@ -20,16 +24,13 @@ public class StatusCommand extends AbstractCommand {
             sendHelpMessage(sender);
             return;
         }
-
-        Optional<UUID> target = getPlayerResolver().resolve(args[1]);
+        Optional<UUID> target = playerResolver.resolve(args[1]);
         if (target.isEmpty()) {
             sender.sendMessage(Component.text("Игрок не найден или не удалось определить его UUID."));
             return;
         }
-
         UUID playerId = target.get();
         boolean changed;
-
         if (subCommand.equals("give")) {
             changed = StatusManager.INSTANCE.giveStatus(
                     playerId,

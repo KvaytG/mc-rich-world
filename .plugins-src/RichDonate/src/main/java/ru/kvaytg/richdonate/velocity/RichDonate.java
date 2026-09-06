@@ -9,7 +9,6 @@ import ru.kvaytg.richdonate.velocity.command.CoinsCommand;
 import ru.kvaytg.richdonate.velocity.command.StatusCommand;
 import ru.kvaytg.richdonate.velocity.donate.coins.CoinsManager;
 import ru.kvaytg.richdonate.velocity.donate.status.StatusManager;
-
 import javax.inject.Inject;
 
 @Plugin(
@@ -22,22 +21,26 @@ import javax.inject.Inject;
 public class RichDonate {
 
     private final ProxyServer proxy;
+    private final PlayerResolver playerResolver;
 
     @Inject
     public RichDonate(ProxyServer proxy) {
         this.proxy = proxy;
+        this.playerResolver = new PlayerResolver(proxy);
+    }
+
+    public PlayerResolver getPlayerResolver() {
+        return playerResolver;
     }
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         CoinsManager.INSTANCE.init();
         StatusManager.INSTANCE.init();
-
         proxy.getChannelRegistrar().register(Identifier.get());
         proxy.getEventManager().register(this, new ChannelHandler(proxy));
-
-        new CoinsCommand(proxy);
-        new StatusCommand(proxy);
+        new CoinsCommand(proxy, playerResolver);
+        new StatusCommand(proxy, playerResolver);
     }
 
     @Subscribe
