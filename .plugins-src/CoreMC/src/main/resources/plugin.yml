@@ -1,0 +1,28 @@
+name: CoreMC
+authors: [KvaytG]
+main: ru.kvaytg.coremc.CoreMc
+version: 1.0.0
+api-version: 1.13
+softdepend: [TAB]
+commands:
+    kick:
+        description: "Kick player. @all for the Console only"
+        usage: "/kick <player|@all> <reason>"
+    kill:
+        description: "Kill player. @all for the Console only"
+        usage: "/kill <player|@all>"
+    vanish:
+        description: "Turn On/Off invisibility mode"
+        usage: "/vanish [player]"
+    warp:
+        description: "Teleport to warp"
+        usage: "/warp <warp> [player]"
+    fly:
+        description: "Turn On/Off fly mode"
+        usage: "/fly [player]"
+    mute:
+        description: "Mute player"
+        usage: "/mute <player> <minutes>"
+    unmute:
+        description: "Unmute player"
+        usage: "/unmute <player>"
