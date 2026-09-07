@@ -78,6 +78,11 @@ public class PhysicsHandler extends LimitHandler {
     }
 
     @EventHandler
+    public void onBlockForm(BlockFormEvent event) {
+        cancelEvent(event, event.getBlock().getWorld());
+    }
+
+    @EventHandler
     public void onBlockFade(BlockFadeEvent event) {
         cancelEvent(event, event.getBlock().getWorld());
     }
