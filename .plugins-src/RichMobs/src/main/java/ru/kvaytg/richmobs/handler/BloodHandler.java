@@ -31,21 +31,11 @@ public class BloodHandler implements Listener {
         );
     }
 
-    /*
-     *
-     * Добавляет кровь для только что умершего игрока
-     *
-     */
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         exudeBlood(event.getEntity(), true);
     }
 
-    /*
-     *
-     * Добавляет кровь для только что умершей сущности
-     *
-     */
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
         exudeBlood(event.getEntity(), false);

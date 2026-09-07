@@ -20,24 +20,17 @@ public class DeathHandler implements Listener {
     }
 
     private int applyAmplifier(Player player, int amount) {
-        boolean boosted = !"default".equals(donateApi.getStatus(player));
+        boolean boosted = !"default".equalsIgnoreCase(donateApi.getStatus(player));
         if (amount == 1 && boosted) return 2;
         return boosted ? amount * 2 : amount;
     }
 
-    /*
-     *
-     * Даёт монетки игроку за убийство
-     *
-     */
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
         Player killer = entity.getKiller();
         if (killer != null) {
-            int coins = entity instanceof Player
-                ? getRandomInRange(3, 5)
-                : getRandomInRange(1, 2);
+            int coins = entity instanceof Player ? getRandomInRange(3, 5) : getRandomInRange(1, 2);
             coins = applyAmplifier(killer, coins);
             donateApi.giveCoins(killer, coins);
         }

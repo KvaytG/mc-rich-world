@@ -17,14 +17,14 @@
             <artifactId>Patina</artifactId>
             <version>1.16.5</version>
             <scope>system</scope>
-            <systemPath>C:/путь-к-ядру/cache/patched_1.16.5.jar</systemPath>
+            <systemPath>${project.basedir}/lib/patched_1.16.5.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>ru.kvaytg.richdonate</groupId>
             <artifactId>RichDonate</artifactId>
             <version>1.0.0</version>
             <scope>system</scope>
-            <systemPath>C:/путь-к/plugins/RichDonate.jar</systemPath>
+            <systemPath>${project.basedir}/lib/RichDonate.jar</systemPath>
         </dependency>
     </dependencies>
 </project>
