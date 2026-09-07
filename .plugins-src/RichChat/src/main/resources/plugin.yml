@@ -3,5 +3,4 @@ authors: [KvaytG]
 main: ru.kvaytg.richchat.RichChat
 version: 1.0.0
 api-version: 1.13
-description: "Менеджер чата проекта RichWorld"
-depend: [ColorAPI, RichDonate, TAB]
+depend: [RichDonate, ColorAPI]
