@@ -4,7 +4,7 @@ main: ru.kvaytg.richpit.RichPit
 version: 1.0.0
 api-version: 1.13
 description: "Режим ThePit проекта RichWorld"
-depend: [RichWorld, RichDonate, ColorAPI]
+depend: [CoreMC, RichDonate, ColorAPI]
 commands:
     up:
         description: "Improves the equipment"
